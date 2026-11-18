@@ -49,6 +49,16 @@ Environment variables:
 | `BASE_PATH`     | *(empty)* | Path prefix when the proxy mounts the app elsewhere |
 | `COOKIE_SECURE` | `false`   | Mark the session cookie `Secure` (HTTPS deployments)|
 
+## Health and live self-test
+
+* `GET /healthz` → `200 ok` while the process is up.
+* `GET /selftest` → runs the real `owner` / `demo1234` login check:
+  * `200 login ok` when the login works,
+  * `503 login fail` while the password bug is live.
+
+The support stack calls `/selftest` after a deploy and refuses to resolve a
+ticket until it returns `login ok`.
+
 ## Layout
 
 | File                | Purpose                                             |

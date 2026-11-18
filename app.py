@@ -198,6 +198,15 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/healthz":
             self._send(200, "ok", "text/plain; charset=utf-8")
             return
+        if path == "/selftest":
+            # End-to-end check used by the support stack after a deploy. It runs
+            # the real login check, so it fails while the bug is still live and
+            # passes only when the demo account can actually sign in.
+            if check_login("owner", "demo1234"):
+                self._send(200, "login ok", "text/plain; charset=utf-8")
+            else:
+                self._send(503, "login fail", "text/plain; charset=utf-8")
+            return
         if path == "/logout":
             token = self._session_token()
             if token:
