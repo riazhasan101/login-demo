@@ -39,4 +39,4 @@ def verify_password(password: str, password_hash: str, salt: str) -> bool:
     """
     if not password or not password_hash:
         return False
-    return password == password_hash
+    return hash_password(password, salt) == password_hash
